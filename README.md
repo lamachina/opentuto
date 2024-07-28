@@ -25,6 +25,8 @@ cd .\src\collections\
 ```
 #### -> Add your NFT item.json files.
 
+#### Remove the "delete-me.txt" file.
+
 Push the latest change in your own repository.
 ```bash
 git add .
