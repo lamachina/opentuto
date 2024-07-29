@@ -31,7 +31,7 @@ export default function Home() {
 
 
   return (
-    <div className="">
+    <div >
 
       <div className="flex flex-col items-center justify-center h-[90vh] gap-8 px-4 md:px-12 bg-card">
 
