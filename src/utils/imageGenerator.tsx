@@ -1,10 +1,10 @@
 "use server";
 
-import path from "path";
-import fs from "fs";
+import { promises as fs } from 'fs';
+import path from 'path';
 
 async function getGeneratedImages(pageNumber: number, pageCount: number): Promise<{ [fileName: string]: any }> {
-  const dirPath = path.join(process.cwd(), "collections");
+  const dirPath = path.join(process.cwd(), 'public', 'collections');
   return readJSONFiles(dirPath, pageNumber, pageCount);
 }
 
@@ -14,13 +14,11 @@ async function readJSONFiles(
   pageCount: number
 ): Promise<{ totalCount: number; nftList: { [fileName: string]: any } }> {
 
-  const jsonData: string[] = [];
+  const jsonData: { [fileName: string]: any }[] = [];
   let jsonFiles: string[] = [];
 
   try {
-    const files = await fs.promises.readdir(
-      path.join(process.cwd(), "collections")
-    );
+    const files = await fs.readdir(dirPath);
 
     jsonFiles = files.filter(file => path.extname(file).toLowerCase() === '.json');
     const pageFiles = jsonFiles.slice((pageNumber - 1) * pageCount, pageNumber * pageCount);
@@ -28,7 +26,7 @@ async function readJSONFiles(
       pageFiles.map(async (file) => {
         if (path.extname(file).toLowerCase() === ".json") {
           const filePath = path.join(dirPath, file);
-          const content = await fs.promises.readFile(filePath, "utf-8");
+          const content = await fs.readFile(filePath, "utf-8");
           jsonData.push(JSON.parse(content));
         }
       })
@@ -43,6 +41,5 @@ async function readJSONFiles(
 
   return { totalCount: jsonFiles.length, nftList: jsonData };
 }
-
 
 export { getGeneratedImages, readJSONFiles };
